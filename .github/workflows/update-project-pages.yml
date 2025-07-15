@@ -1,7 +1,5 @@
 name: Update Project Pages
-
-on:
-  workflow_dispatch:
+on: workflow_dispatch
 
 jobs:
   update-pages:
@@ -11,35 +9,71 @@ jobs:
       PROJECTS: |
         obsidian7673/odin-recipes:.
         obsidian7673/odin-landing-page:.
+
     steps:
       - name: Checkout main repo
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - name: Setup Git config
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          set -euo pipefail
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Fetch and copy each project
         run: |
+          set -euo pipefail
+          UPDATED=""
+
           IFS=$'\n'
           for entry in $PROJECTS; do
             REPO="${entry%%:*}"
             OUTPUT="${entry##*:}"
             NAME=$(basename "$REPO")
-            echo "Processing $REPO ($OUTPUT) -> $NAME"
+
+            echo "::group::Syncing $NAME"
+            echo "Cloning $REPO…"
+            git clone --depth=1 "https://github.com/${REPO}.git" "temp-$NAME" || {
+              echo "Error: failed to clone $REPO"
+              exit 1
+            }
+
+            echo "Removing old folder: $NAME"
             rm -rf "$NAME"
-            echo "::group::Cloning $REPO"
-            git -c credential.helper= clone --depth 1 "https://github.com/${REPO}.git" "temp-$NAME" || echo "Failed to clone $REPO"
+
+            echo "Copying files from temp-$NAME/$OUTPUT to ./$NAME"
+            mkdir -p "$NAME"
+            # add files or patterns to exclude below
+            rsync -a \
+              --exclude='.git' \
+              --exclude='.github' \
+              --exclude='README.md' \
+              "temp-$NAME/$OUTPUT/" "./$NAME/" || {
+                echo "Error: rsync failed for $NAME"
+                exit 1
+              }
+
+            echo "Cleaning up temp directory"
+            rm -rf "temp-$NAME"
+
+            UPDATED+="$NAME "
             echo "::endgroup::"
-            mkdir "$NAME"
-            cp -r "temp-$NAME/$OUTPUT"/. "./$NAME/"
-            rm -rf "./$NAME/.git" "./$NAME/.github" "temp-$NAME"
           done
 
-      - name: Commit and push changes
+          echo "Projects updated: $UPDATED"
+
+      - name: Commit & push changes
         run: |
+          set -euo pipefail
           git add .
-          git diff --cached --quiet || git commit -m "Update project subfolders [auto]"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/obsidian7673/project-pages.git
+
+          if git diff --cached --quiet; then
+            echo "No changes detected; skipping commit."
+            exit 0
+          fi
+
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          git commit -m "Update projects: $UPDATED [auto @ $TIMESTAMP]"
           git push
