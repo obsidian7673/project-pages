@@ -31,9 +31,10 @@ jobs:
             NAME=$(basename "$REPO")
             echo "Processing $REPO ($OUTPUT) -> $NAME"
             rm -rf "$NAME"
-            git -c credential.helper= clone --depth 1 --recurse-submodules --shallow-submodules "https://github.com/${REPO}.git" "temp-$NAME"
-            cp -r "temp-$NAME/$OUTPUT" "./$NAME"
-            rm -rf "temp-$NAME"
+            git -c credential.helper= clone --depth 1 "https://github.com/${REPO}.git" "temp-$NAME"
+            mkdir "$NAME"
+            cp -r "temp-$NAME/$OUTPUT"/. "./$NAME/"
+            rm -rf "./$NAME/.git" "./$NAME/.github" "temp-$NAME"
           done
 
       - name: Commit and push changes
