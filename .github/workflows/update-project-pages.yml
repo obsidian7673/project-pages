@@ -9,8 +9,8 @@ jobs:
     env:
       # List of project [ owner/repo:build_output_path ]
       PROJECTS: |
-        obsidian7673/odin-recipes:public
-        obsidian7673/odin-landing-page:public
+        obsidian7673/odin-recipes:.
+        obsidian7673/odin-landing-page:.
     steps:
       - name: Checkout main repo
         uses: actions/checkout@v4
