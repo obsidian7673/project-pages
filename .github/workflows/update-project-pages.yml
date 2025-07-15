@@ -1,0 +1,43 @@
+name: Update Project Pages
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update-pages:
+    runs-on: ubuntu-latest
+    env:
+      # List of project [ owner/repo:build_output_path ]
+      PROJECTS: |
+        obsidian7673/odin-recipies:dist
+        obsidian7673/odin-landing-page:dist
+    steps:
+      - name: Checkout main repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Git config
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Fetch and copy each project
+        run: |
+          IFS=$'\n'
+          for entry in $PROJECTS; do
+            REPO="${entry%%:*}"
+            OUTPUT="${entry##*:}"
+            NAME=$(basename "$REPO")
+            echo "Processing $REPO ($OUTPUT) -> $NAME"
+            rm -rf "$NAME"
+            git clone --depth 1 --recurse-submodules --shallow-submodules "https://github.com/${REPO}.git" "temp-$NAME"
+            cp -r "temp-$NAME/$OUTPUT" "./$NAME"
+            rm -rf "temp-$NAME"
+          done
+
+      - name: Commit and push changes
+        run: |
+          git add .
+          git diff --cached --quiet || git commit -m "Update project subfolders [auto]"
+          git push
