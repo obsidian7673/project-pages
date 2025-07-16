@@ -1,0 +1,174 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  font-family: 'Times New Roman', Times, serif;
+  color: #f8f8f2;
+}
+
+body {
+  background-color: #44475a;
+}
+
+a:link {
+  /* text-decoration: double; */
+  color: #f8f8f2;
+}
+
+a:visited {
+  color: #bd93f9;
+}
+
+a:active,
+a:hover {
+  color: #8be9fd
+}
+
+.content {
+  margin: 8vw auto;
+  width: 80vw;
+}
+
+.card {
+  border: solid .2vw #6272a4;
+  border-radius: 1vw;
+  text-align: center;
+  background-color: #282a36;
+}
+
+h1,
+h2,
+h3 {
+  padding: 1rem;
+}
+
+h1 {
+  font-size: 5vw;
+}
+
+h2 {
+  font-size: 4vw;
+}
+
+h3 {
+  font-size: 3vw;
+}
+
+.attribution {
+  padding-bottom: 1rem;
+  color: #c8c8c2;
+}
+
+.heading {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  border-bottom: solid .2vw #6272a4;
+  min-height: 10vw;
+  justify-content: center;
+  align-items: center;
+  gap: 1vw;
+  background-color: #282a36;
+}
+
+.obsidian-rose {
+  font-size: 2vw;
+}
+
+.site-credits {
+  padding-bottom: 1rem;
+}
+
+.site-credits .attribution {
+  display: inline;
+}
+
+.recipe-image img {
+  margin: 3rem;
+  margin-bottom: 0px;
+  border: .5rem solid #363848;
+  width: calc(100% - 6rem);
+}
+
+.recipe-image .attribution {
+  padding-top: .5rem;
+}
+
+.description {
+  margin-top: 8vw;
+}
+
+.recipe {
+  display: flex;
+  margin: 2vw auto;
+  column-gap: 2vw;
+}
+
+.text {
+  padding: 0 5vw 2vw 5vw;
+}
+
+ul,
+ol {
+  text-align: justify;
+
+  li {
+    margin-bottom: 1rem;
+  }
+}
+
+.ingredients {
+  width: 33%;
+}
+
+.directions {
+  width: 66%;
+}
+
+.home:link,
+.home:visited {
+  display: inline-block;
+  margin: 0;
+  padding: 1rem 0;
+  width: 33%;
+  text-align: center;
+  text-decoration: none;
+  font-size: 2vw;
+  color: #f8f8f2;
+}
+
+.home:hover,
+.home:active {
+  color: #f8f8f2;
+  background-color: #363848;
+}
+
+.recipe-link-container {
+  display: flex;
+  margin-bottom: 2vw;
+  gap: 2vw;
+}
+
+.recipe-link-container img {
+  margin-left: auto;
+  padding: .2vw;
+  width: 15vw;
+}
+
+.recipe-link:link,
+.recipe-link:visited {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  font-size: 2vw;
+  color: #f8f8f2;
+}
+
+.recipe-link:hover,
+.recipe-link:active {
+  color: #f8f8f2;
+  background-color: #363848;
+}
