@@ -83,8 +83,7 @@ jobs:
                 continue
               fi
       
-              TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
-              git commit -m "Updated $name [auto @ $TIMESTAMP]"
+              git commit -m "Updated $name [auto]"
               git push
             fi
           done
