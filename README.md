@@ -6,6 +6,7 @@ Each project is available at a subpath of [project.obsidianrose.dev](https://pro
 
 - [Odin Recipes](https://project.obsidianrose.dev/odin-recipes)
 - [Odin Landing Page](https://project.obsidianrose.dev/odin-landing-page)
+- [Odin Rock Paper Scissors](https://project.obsidianrose.dev/odin-rock-paper-scissors)
 
 ---
 Auto-updated by GitHub Actions
