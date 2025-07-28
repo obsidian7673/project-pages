@@ -3,73 +3,102 @@ let getComputerChoice = () => {
 
   switch (choice) {
     case 0:
-      choice = "rock";
+      choice = 'rock';
       break;
     case 1:
-      choice = "paper";
+      choice = 'paper';
       break;
     case 2:
-      choice = "scissors";
+      choice = 'scissors';
       break;
   }
 
   return choice;
 }
 
-let getHumanChoice = () => prompt("What do you want to throw?").toLowerCase();
+let getHumanChoice = () => prompt('What do you want to throw?').toLowerCase();
 
-let computerScore, humanScore = 0;
+let humanScore = 0;
+let computerScore = 0;
 
 let playRound = (humanChoice, computerChoice) => {
+  let result = '';
   switch (humanChoice) {
-    case "rock":
+    case 'rock':
       switch (computerChoice) {
-        case "rock":
-          return handleResult("tie", humanChoice, computerChoice);
-        case "paper":
-          return handleResult("lose", humanChoice, computerChoice);
-        case "scissors":
-          return handleResult("win", humanChoice, computerChoice);
+        case 'rock':
+          result = handleResult('tie', humanChoice, computerChoice);
+          break;
+        case 'paper':
+          result = handleResult('lose', humanChoice, computerChoice);
+          break;
+        case 'scissors':
+          result = handleResult('win', humanChoice, computerChoice);
+          break;
       }
-    case "paper":
+      break;
+    case 'paper':
       switch (computerChoice) {
-        case "rock":
-          return handleResult("win", humanChoice, computerChoice);
-        case "paper":
-          return handleResult("tie", humanChoice, computerChoice);
-        case "scissors":
-          return handleResult("lose", humanChoice, computerChoice);
+        case 'rock':
+          result = handleResult('win', humanChoice, computerChoice);
+          break;
+        case 'paper':
+          result = handleResult('tie', humanChoice, computerChoice);
+          break;
+        case 'scissors':
+          result = handleResult('lose', humanChoice, computerChoice);
+          break;
       }
-    case "scissors":
+      break;
+    case 'scissors':
       switch (computerChoice) {
-        case "rock":
-          return handleResult("lose", humanChoice, computerChoice);
-        case "paper":
-          return handleResult("win", humanChoice, computerChoice);
-        case "scissors":
-          return handleResult("tie", humanChoice, computerChoice);
+        case 'rock':
+          result = handleResult('lose', humanChoice, computerChoice);
+          break;
+        case 'paper':
+          result = handleResult('win', humanChoice, computerChoice);
+          break;
+        case 'scissors':
+          result = handleResult('tie', humanChoice, computerChoice);
+          break;
       }
+      break;
   }
+
+  const resultDiv = document.querySelector('.result');
+  resultDiv.innerText = result;
 }
 
 let handleResult = (result, humanChoice, computerChoice) => {
   switch (result) {
-    case "win":
+    case 'win':
       humanScore++;
       return `you win! ${humanChoice} beats ${computerChoice}`;
-    case "lose":
+    case 'lose':
       computerScore++;
       return `you lose! ${humanChoice} loses to ${computerChoice}`;
-    case "tie":
+    case 'tie':
       return `tie! ${humanChoice} ties ${computerChoice}`;
   }
 }
 
-let playGame = () => {
-  for (let roundNumber = 0; roundNumber < 5; roundNumber++) {
-    console.log(`round: ${roundNumber}`);
-    console.log(playRound(getHumanChoice(), getComputerChoice()));
-  }
+const gameEnd = (winStatus) => {
+  alert(`you ${winStatus} ${humanScore} to ${computerScore}!`);
+  humanScore = computerScore = 0;
 }
 
-playGame()
+const onPlayButton = (event) => {
+  const numHumanWins = document.querySelector('.scores-human .num-wins');
+  const numComputerWins = document.querySelector('.scores-computer .num-wins');
+  playRound(event.target.textContent, getComputerChoice());
+  if (humanScore == 5) gameEnd('win');
+  if (computerScore == 5) gameEnd('lose');
+  numHumanWins.innerText = humanScore;
+  numComputerWins.innerText = computerScore;
+}
+
+window.onload = () => {
+  const rpsOptions = document.querySelector('.rps-options');
+
+  rpsOptions.addEventListener('click', onPlayButton);
+}
