@@ -10,6 +10,7 @@ jobs:
         obsidian7673/odin-recipes:.
         obsidian7673/odin-landing-page:.
         obsidian7673/odin-rock-paper-scissors:.
+        obsidian7673/odin-sketch-pad:.
 
     steps:
       - name: Checkout main repo
