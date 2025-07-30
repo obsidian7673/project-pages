@@ -75,6 +75,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
+          token: ${{ secrets.PAT_FOR_CPR }}
           branch: update-branch
           title: "Update project pages [auto]"
           body: |
