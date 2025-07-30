@@ -72,20 +72,14 @@ jobs:
 
           echo "UPDATED=$(echo "$UPDATED" | xargs)" >> $GITHUB_ENV
 
-      - name: Commit & push per-project
-        run: |
-          set -euo pipefail
-          for name in $UPDATED; do
-            if [ -d "docs/$name" ]; then
-              git add "docs/$name" || true
-      
-              if git diff --cached --quiet; then
-                echo "No changes detected for $name; skipping commit."
-                git reset "docs/$name"
-                continue
-              fi
-      
-              git commit -m "Updated $name [auto]"
-              git push
-            fi
-          done
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          branch: update-branch
+          title: "Update project pages [auto]"
+          body: |
+            pull request was created automatically by update-project-pages to update project docs from the latest source repositories
+          commit-message: "Update project docs [auto]"
+          base: main
+          delete-branch: false
+          add-paths: docs/
